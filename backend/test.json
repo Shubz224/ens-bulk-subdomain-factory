@@ -1,0 +1,32 @@
+{
+  "hasTree": true,
+  "merkleRoot": "0xef262d734fa9f2cc197ee37f03318a7cb2bc7e8a4f874a53dc50a1d1e9220591",
+  "totalClaims": 5,
+  "sampleClaims": [
+    {
+      "address": "0x742d35cc6634c0532925a3b8d00ecf0a0a8df9b4",
+      "subdomain": "alice",
+      "expiry": 1735689600
+    },
+    {
+      "address": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "subdomain": "bob",
+      "expiry": 1735689600
+    },
+    {
+      "address": "0xf977814e90da44bfa03b6295a0616a897441acec",
+      "subdomain": "charlie",
+      "expiry": 1735689600
+    },
+    {
+      "address": "0x28c6c06298d514db089934071355e5743bf21d60",
+      "subdomain": "diana",
+      "expiry": 1735689600
+    },
+    {
+      "address": "0x2faf487a4414fe77e2327f0bf4ae2a264a776ad2",
+      "subdomain": "eve",
+      "expiry": 1735689600
+    }
+  ]
+}
