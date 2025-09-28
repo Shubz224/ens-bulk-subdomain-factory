@@ -1,13 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WalletButton from "../components/WalletButton";
 import UploadCSV from "../components/UploadCSV";
 import DeployConfig from "../components/DeployConfig";
 import ClaimSubdomain from "../components/ClaimSubdomain";
+import { useFactoryContract } from '../contracts';
+import { useWallet } from '../hooks/useWallet';
+import toast from 'react-hot-toast';
+
+// --- PauseBanner Component ---
+function PauseBanner({ contract }) {
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    if (!contract) return;
+    contract.paused().then(setPaused).catch(() => {});
+  }, [contract]);
+  if (!paused) return null;
+  return (
+    <div className="bg-yellow-100 border border-yellow-400 text-yellow-900 text-center py-2 px-4 mb-8 rounded font-bold shadow">
+      ⚠️ Contract is PAUSED. All claiming and configuration actions are disabled!
+    </div>
+  );
+}
+// --- End PauseBanner ---
 
 export default function Home() {
   const [root, setRoot] = useState(null);
   const [count, setCount] = useState(null);
   const [parentDomain, setParentDomain] = useState("demo.eth");
+
+  const { signer } = useWallet();
+  const contract = useFactoryContract(signer);
+
+  const handlePause = async () => {
+    if (!contract) return;
+    try {
+      const tx = await contract.pause();
+      toast('Pausing contract... (pending)');
+      await tx.wait();
+      toast.success('Factory contract is paused');
+    } catch (e) {
+      toast.error('Pause failed');
+    }
+  };
+  const handleUnpause = async () => {
+    if (!contract) return;
+    try {
+      const tx = await contract.unpause();
+      toast('Unpausing contract... (pending)');
+      await tx.wait();
+      toast.success('Factory contract is now live');
+    } catch (e) {
+      toast.error('Unpause failed');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -46,7 +91,6 @@ export default function Home() {
             For every dreamer, creator, and change-maker tired of the old internet, Web3 is here. 
             ENS is more than a protocol - it's a commitment to a better web, built for everyone.
           </p>
-          
           {/* Sample Domain Badges */}
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <span className="bg-pink-100 text-pink-700 px-4 py-2 rounded-full font-medium">uni.eth</span>
@@ -61,15 +105,16 @@ export default function Home() {
 
       {/* Main Content */}
       <section className="max-w-7xl mx-auto px-6 py-16">
+        {/* --- PauseBanner is injected here, above grid --- */}
+        <PauseBanner contract={contract} />
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          
           {/* Left Column - Admin Panel */}
           <div className="space-y-8">
             <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
               <h2 className="text-xl font-semibold mb-6 text-gray-900">
                 📋 Register your name
               </h2>
-              
               {/* Parent Domain Input */}
               <div className="mb-6">
                 <label className="block text-gray-700 font-medium mb-3">Parent ENS Domain</label>
@@ -85,11 +130,9 @@ export default function Home() {
                   Enter the parent domain for subdomain minting
                 </p>
               </div>
-              
               {/* CSV Upload */}
               <UploadCSV onRoot={(merkleRoot, total) => { setRoot(merkleRoot); setCount(total); }} />
             </div>
-
             {/* Results Panel */}
             {root && (
               <div className="bg-green-50 rounded-2xl p-8 border border-green-200">
@@ -112,16 +155,26 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                
                 <DeployConfig
                   merkleRoot={root}
                   claimCount={count}
                   parentDomain={parentDomain}
                 />
+                <div className="flex gap-4 mt-8">
+                  <button 
+                    onClick={handlePause} 
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded font-semibold">
+                    Pause Contract
+                  </button>
+                  <button 
+                    onClick={handleUnpause}
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-semibold">
+                    Unpause Contract
+                  </button>
+                </div>
               </div>
             )}
           </div>
-
           {/* Right Column - User Panel */}
           <div className="space-y-8">
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
@@ -135,7 +188,6 @@ export default function Home() {
                 <ClaimSubdomain parentDomain={parentDomain} />
               </div>
             </div>
-
             {/* Demo Info Panel */}
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-200">
               <h3 className="text-lg font-semibold text-blue-800 mb-6">🚀 How it works</h3>
