@@ -55,7 +55,7 @@ Imagine you're running a **10,000-person conference** and want to give everyone 
 
 ## 🏗️ **Architecture**
 
-![Technical Architecture](https://user-gen-media-assets.s3.amazonaws.com/seedream_images/ee0a4fe3-d944-4fc2-a333-14b60a4d46df.png)
+![Technical Architecture](public/flowdaigram.png)
 
 ### **Smart Contract Layer** (Foundry + Solidity)
 ```
@@ -241,7 +241,6 @@ npm start
 ### **Testnet Demo** (Recommended)
 1. **Connect MetaMask** to Sepolia testnet
 2. **Get free ETH** from [Sepolia Faucet](https://sepoliafaucet.com/)
-3. **Visit Demo**: [https://ens-bulk-factory.vercel.app](https://your-demo-url.com)
 4. **Claim subdomain**: Follow the guided flow
 
 ### **Contract Addresses**
