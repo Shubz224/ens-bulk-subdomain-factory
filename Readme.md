@@ -248,8 +248,7 @@ npm start
 
 | Network | Contract Address | Explorer |
 |---------|------------------|----------|
-| **Sepolia** | `0x1234...abcd` | [View on Etherscan](https://sepolia.etherscan.io/address/0x1234) |
-| **Holesky** | `0x5678...efgh` | [View on Etherscan](https://holesky.etherscan.io/address/0x5678) |
+| **Sepolia** | `0x1234...abcd` | [View on Etherscan](https://sepolia.etherscan.io/address/0xf12443049f03379103d57e8fba5DB4e6e88163EF) |
 | **Mainnet** | *Coming Soon* | *Pending audit* |
 
 ---
