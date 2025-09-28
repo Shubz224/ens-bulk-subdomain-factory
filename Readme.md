@@ -55,7 +55,7 @@ Imagine you're running a **10,000-person conference** and want to give everyone 
 
 ## 🏗️ **Architecture**
 
-![Technical Architecture](public/flowdaigram.png)
+![Technical Architecture](./public/flowdaigram.png)
 
 ### **Smart Contract Layer** (Foundry + Solidity)
 ```
