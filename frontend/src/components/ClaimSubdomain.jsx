@@ -71,16 +71,22 @@ export default function ClaimSubdomain({ parentDomain }) {
   };
 
   // Enhanced contract interaction functions
-  const checkIfLeafClaimed = async (address, subdomain, expiry) => {
-    if (!contract) return false;
-    try {
-      return await contract.isLeafClaimed(address, subdomain, expiry);
-    } catch (e) {
-      console.error('Error checking leaf claim status:', e);
-      // Fallback for old contract - just return false
-      return false;
-    }
-  };
+const checkIfLeafClaimed = async (address, subdomain, expiry) => {
+  if (!contract) return false;
+  try {
+    // Always use strict formatting: address (checksum), subdomain (trimmed + lowercase), expiry (number)
+    const normalizedAddress = ethers.getAddress(address.toLowerCase());
+    const formattedSubdomain = subdomain.trim().toLowerCase();
+    const formattedExpiry = Number(expiry);
+
+    return await contract.isLeafClaimed(normalizedAddress, formattedSubdomain, formattedExpiry);
+  } catch (e) {
+    console.error('Error checking leaf claim status:', e);
+    // Fallback for old contract - just return false
+    return false;
+  }
+};
+
 
   const verifyMerkleProof = async (address, subdomain, expiry, merkleProof) => {
     if (!contract) return false;
